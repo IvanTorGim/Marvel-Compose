@@ -26,7 +26,7 @@ fun Navigation() {
         }
         composable(NavItem.CharacterDetail) {
             CharacterDetailScreen(
-                id = it.findArg(NavArg.ItemId),
+                id = it.findArg<Int>(NavArg.ItemId),
                 onUpClick = { navController.popBackStack() }
             )
         }

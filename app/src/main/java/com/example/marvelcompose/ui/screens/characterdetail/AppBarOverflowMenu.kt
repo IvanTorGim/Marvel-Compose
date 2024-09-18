@@ -32,7 +32,7 @@ fun AppBarOverflowMenu(urls: List<Url>) {
                     text = { Text(text = it.type) },
                     onClick = {
                         showMenu = false
-                        uriHandler.openUri("https://wwww.google.es/")
+                        uriHandler.openUri(it.url)
                     })
             }
         }
