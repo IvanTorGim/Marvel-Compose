@@ -2,18 +2,27 @@ package com.example.marvelcompose.data.repositories
 
 import com.example.marvelcompose.data.model.Character
 import com.example.marvelcompose.data.model.Reference
+import com.example.marvelcompose.data.model.Url
 import com.example.marvelcompose.data.network.ApiClient
 import com.example.marvelcompose.data.network.entities.asString
 import com.example.marvelcompose.data.network.entities.Character as NetworkCharacter
 
 object CharactersRepository {
 
+    private var charactersCache = emptyList<Character>()
+
     suspend fun getCharacters(): List<Character> {
-        val result = ApiClient.charactersService.getCharacters(0, 100)
-        return result.data.results.map { it.asCharacter() }
+        if (charactersCache.isEmpty()) {
+            val result = ApiClient.charactersService.getCharacters(0, 100)
+            charactersCache = result.data.results.map { it.asCharacter() }
+        }
+        return charactersCache
     }
 
     suspend fun findCharacter(characterId: Int): Character {
+        val character = charactersCache.find { it.id == characterId }
+        if (character != null) return character
+
         val result = ApiClient.charactersService.findCharacter(characterId)
         return result.data.results.first().asCharacter()
     }
@@ -24,6 +33,7 @@ fun NetworkCharacter.asCharacter(): Character {
     val series = series.items.map { Reference(it.name) }
     val events = events.items.map { Reference(it.name) }
     val stories = stories.items.map { Reference(it.name) }
+    val urls: List<Url> = urls.map { Url(it.type, it.url) }
 
     return Character(
         id = this.id,
@@ -33,6 +43,7 @@ fun NetworkCharacter.asCharacter(): Character {
         comics = comics,
         series = series,
         events = events,
-        stories = stories
+        stories = stories,
+        urls = urls
     )
 }

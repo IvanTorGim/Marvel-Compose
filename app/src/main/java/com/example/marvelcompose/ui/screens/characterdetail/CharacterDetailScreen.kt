@@ -15,10 +15,13 @@ import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Collections
 import androidx.compose.material.icons.filled.Event
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,36 +33,51 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.marvelcompose.MarvelApp
 import com.example.marvelcompose.data.model.Character
 import com.example.marvelcompose.data.model.Reference
 import com.example.marvelcompose.data.repositories.CharactersRepository
+import com.example.marvelcompose.ui.navigation.ArrowBackIcon
 
 @Composable
-fun CharacterDetailScreen(id: Int) {
+fun CharacterDetailScreen(id: Int, onUpClick: () -> Unit) {
     var characterState by remember { mutableStateOf<Character?>(null) }
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         characterState = CharactersRepository.findCharacter(id)
     }
     characterState?.let { character ->
-        CharacterDetailScreen(character)
+        CharacterDetailScreen(character, onUpClick)
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterDetailScreen(character: Character) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        item { Header(character) }
-        section(icon = Icons.Default.Collections, name = "Series", references = character.series)
-        section(icon = Icons.Default.Event, name = "Events", references = character.events)
-        section(icon = Icons.Default.Book, name = "Comics", references = character.comics)
-        section(icon = Icons.Default.Bookmark, name = "Stories", references = character.stories)
+fun CharacterDetailScreen(character: Character, onUpClick: () -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = character.name) },
+                navigationIcon = { ArrowBackIcon(onUpClick) },
+                actions = { AppBarOverflowMenu(character.urls) }
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(padding)
+        ) {
+            item { Header(character) }
+            section(
+                icon = Icons.Default.Collections,
+                name = "Series",
+                references = character.series
+            )
+            section(icon = Icons.Default.Event, name = "Events", references = character.events)
+            section(icon = Icons.Default.Book, name = "Comics", references = character.comics)
+            section(icon = Icons.Default.Bookmark, name = "Stories", references = character.stories)
+        }
     }
 }
 
