@@ -1,4 +1,4 @@
-package com.example.marvelcompose.ui.screens.caracters
+package com.example.marvelcompose.ui.screens.characters
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import com.example.marvelcompose.data.model.Character
 import com.example.marvelcompose.data.repositories.CharactersRepository
 
 @Composable
-fun CharacterScreen(paddingValues: PaddingValues, onClick: (Character) -> Unit) {
+fun CharacterScreen(onClick: (Character) -> Unit) {
     var characterState by rememberSaveable { mutableStateOf(emptyList<Character>()) }
 
     LaunchedEffect(true) {
@@ -36,17 +36,15 @@ fun CharacterScreen(paddingValues: PaddingValues, onClick: (Character) -> Unit) 
     }
     CharactersScreen(
         characters = characterState,
-        paddingValues = paddingValues,
         onClick = onClick
     )
 }
 
 @Composable
-fun CharactersScreen(characters: List<Character>, paddingValues: PaddingValues, onClick: (Character) -> Unit) {
+fun CharactersScreen(characters: List<Character>, onClick: (Character) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(180.dp),
-        contentPadding = PaddingValues(4.dp),
-        modifier = Modifier.padding(paddingValues)
+        contentPadding = PaddingValues(4.dp)
     ) {
         items(characters) {
             CharacterItem(
