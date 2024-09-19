@@ -1,8 +1,8 @@
 package com.example.marvelcompose.ui.screens.characterdetail
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,16 +16,11 @@ import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Collections
 import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,26 +36,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.marvelcompose.R
-import com.example.marvelcompose.data.model.Character
-import com.example.marvelcompose.data.model.Reference
+import com.example.marvelcompose.data.entities.Character
+import com.example.marvelcompose.data.entities.MarvelItem
+import com.example.marvelcompose.data.entities.Reference
+import com.example.marvelcompose.data.entities.ReferenceList
 import com.example.marvelcompose.data.repositories.CharactersRepository
-import com.example.marvelcompose.ui.navigation.ArrowBackIcon
 
 @Composable
-fun CharacterDetailScreen(id: Int, onUpClick: () -> Unit) {
+fun MarvelItemDetailScreen(id: Int, onUpClick: () -> Unit) {
     var characterState by remember { mutableStateOf<Character?>(null) }
+
     LaunchedEffect(Unit) {
-        characterState = CharactersRepository.findCharacter(id)
+        characterState = CharactersRepository.find(id)
     }
+
     characterState?.let { character ->
-        CharacterDetailScreen(character, onUpClick)
+        MarvelItemDetailScreen(character, onUpClick)
     }
 }
 
 @Composable
-fun CharacterDetailScreen(character: Character, onUpClick: () -> Unit) {
-    CharacterDetailScaffold(
-        character = character,
+fun MarvelItemDetailScreen(marvelItem: MarvelItem, onUpClick: () -> Unit) {
+    MarvelItemDetailScaffold(
+        marvelItem = marvelItem,
         onUpClick = onUpClick
     ) { padding ->
         LazyColumn(
@@ -68,52 +66,23 @@ fun CharacterDetailScreen(character: Character, onUpClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(padding)
         ) {
-            item { Header(character) }
-            section(
-                icon = Icons.Default.Collections,
-                name = "Series",
-                references = character.series
-            )
-            section(icon = Icons.Default.Event, name = "Events", references = character.events)
-            section(icon = Icons.Default.Book, name = "Comics", references = character.comics)
-            section(icon = Icons.Default.Bookmark, name = "Stories", references = character.stories)
+            item { Header(marvelItem) }
+            marvelItem.reference.forEach {
+                val (icon, @StringRes stringRes) = it.type.createUiData()
+                section(icon, stringRes, it.reference)
+            }
         }
     }
 }
 
-fun LazyListScope.section(icon: ImageVector, name: String, references: List<Reference>) {
-    if (references.isEmpty()) return
-    item {
-        Text(
-            text = name,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-    items(references) { reference ->
-        ListItem(
-            headlineContent = {
-                Text(text = reference.name)
-            },
-            leadingContent = {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = name
-                )
-            }
-        )
-    }
-
-}
-
 @Composable
-fun Header(character: Character) {
+fun Header(marvelItem: MarvelItem) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         AsyncImage(
-            model = character.thumbnail,
-            contentDescription = character.name,
+            model = marvelItem.thumbnail,
+            contentDescription = marvelItem.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,7 +91,7 @@ fun Header(character: Character) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = character.name,
+            text = marvelItem.title,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
@@ -131,10 +100,41 @@ fun Header(character: Character) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = character.description,
+            text = marvelItem.description,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(16.dp, 0.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
+
+private fun LazyListScope.section(icon: ImageVector, @StringRes name: Int, items: List<Reference>) {
+    if (items.isEmpty()) return
+    item {
+        Text(
+            text = stringResource(name),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+    items(items) {
+        ListItem(
+            headlineContent = { Text(text = it.name) },
+            leadingContent = {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = it.name
+                )
+            }
+        )
+    }
+}
+
+private fun ReferenceList.Type.createUiData(): Pair<ImageVector, Int> = when (this) {
+    ReferenceList.Type.CHARACTER -> Icons.Default.Person to R.string.characters
+    ReferenceList.Type.COMIC -> Icons.Default.Book to R.string.comics
+    ReferenceList.Type.STORY -> Icons.Default.Bookmark to R.string.stories
+    ReferenceList.Type.EVENT -> Icons.Default.Event to R.string.events
+    ReferenceList.Type.SERIES -> Icons.Default.Collections to R.string.series
+}
+

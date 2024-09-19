@@ -5,7 +5,7 @@ data class ApiResponse<T>(
     val attributionText: String,
     val code: Int,
     val copyright: String,
-    val data: Data<T>,
+    val data: ApiData<T>,
     val etag: String,
     val status: String
 )

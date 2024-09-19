@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,64 +30,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.marvelcompose.R
-import com.example.marvelcompose.data.model.Character
+import com.example.marvelcompose.data.entities.Character
 import com.example.marvelcompose.data.repositories.CharactersRepository
+import com.example.marvelcompose.ui.screens.common.MarvelItemListScreen
 
 @Composable
 fun CharacterScreen(onClick: (Character) -> Unit) {
-    var characterState by rememberSaveable { mutableStateOf(emptyList<Character>()) }
+    var characterState by remember { mutableStateOf(emptyList<Character>()) }
 
     LaunchedEffect(Unit) {
-        characterState = CharactersRepository.getCharacters()
+        characterState = CharactersRepository.get()
     }
-    CharactersScreen(
-        characters = characterState,
+    MarvelItemListScreen(
+        items = characterState,
         onClick = onClick
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CharactersScreen(characters: List<Character>, onClick: (Character) -> Unit) {
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }) }
-    ) { padding ->
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(180.dp),
-            contentPadding = PaddingValues(4.dp),
-            modifier = Modifier.padding(padding)
-        ) {
-            items(characters) {
-                CharacterItem(
-                    character = it,
-                    modifier = Modifier.clickable { onClick(it) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun CharacterItem(character: Character, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.padding(8.dp)
-    ) {
-        Card {
-            AsyncImage(
-                model = character.thumbnail,
-                contentDescription = character.name,
-                modifier = Modifier
-                    .background(Color.LightGray)
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                contentScale = ContentScale.Crop
-            )
-        }
-        Text(
-            text = character.name,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 2,
-            modifier = Modifier.padding(8.dp, 16.dp)
-        )
-    }
 }

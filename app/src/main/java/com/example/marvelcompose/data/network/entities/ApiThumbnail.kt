@@ -1,8 +1,8 @@
 package com.example.marvelcompose.data.network.entities
 
-data class Thumbnail(
+data class ApiThumbnail(
     val extension: String,
     val path: String
 )
 
-fun Thumbnail.asString() = "$path.$extension".replace("http", "https")
+fun ApiThumbnail.asString() = "$path.$extension".replace("http", "https")

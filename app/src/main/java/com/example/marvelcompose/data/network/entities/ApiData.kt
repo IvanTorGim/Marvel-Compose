@@ -1,6 +1,6 @@
 package com.example.marvelcompose.data.network.entities
 
-data class Data<T>(
+data class ApiData<T>(
     val count: Int,
     val limit: Int,
     val offset: Int,

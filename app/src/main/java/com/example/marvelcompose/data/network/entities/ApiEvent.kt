@@ -1,15 +1,19 @@
 package com.example.marvelcompose.data.network.entities
 
-data class ApiCharacter(
+data class ApiEvent(
     val id: Int,
-    val name: String,
+    val title: String,
     val description: String,
     val thumbnail: ApiThumbnail,
+    val characters: ApiReferenceList,
     val comics: ApiReferenceList,
-    val events: ApiReferenceList,
     val series: ApiReferenceList,
     val stories: ApiReferenceList,
     val urls: List<ApiUrl>,
+    val start: String,
+    val end: String,
+    val previous: ApiReference,
+    val next: ApiReference,
     val modified: String,
     val resourceURI: String
 )
