@@ -2,11 +2,13 @@ package com.example.marvelcompose.data.repositories
 
 import com.example.marvelcompose.data.entities.Character
 import com.example.marvelcompose.data.entities.Comic
+import com.example.marvelcompose.data.entities.Event
 import com.example.marvelcompose.data.entities.Reference
 import com.example.marvelcompose.data.entities.ReferenceList
 import com.example.marvelcompose.data.entities.Url
 import com.example.marvelcompose.data.network.entities.ApiCharacter
 import com.example.marvelcompose.data.network.entities.ApiComic
+import com.example.marvelcompose.data.network.entities.ApiEvent
 import com.example.marvelcompose.data.network.entities.ApiReferenceList
 import com.example.marvelcompose.data.network.entities.asString
 
@@ -39,6 +41,19 @@ fun ApiComic.asComic(): Comic = Comic(
     urls = urls.map { Url(it.type, it.url) }
 )
 
+fun ApiEvent.asEvent(): Event = Event(
+    id = id,
+    title = title,
+    description = description,
+    thumbnail = thumbnail.asString(),
+    reference = listOf(
+        characters.toDomain(ReferenceList.Type.CHARACTER),
+        comics.toDomain(ReferenceList.Type.COMIC),
+        series.toDomain(ReferenceList.Type.SERIES),
+        stories.toDomain(ReferenceList.Type.STORY)
+    ),
+    urls = urls.map { Url(it.type, it.url) }
+)
 
 private fun String.toDomain(): Comic.Format = when (this) {
     "magazine" -> Comic.Format.MAGAZINE
