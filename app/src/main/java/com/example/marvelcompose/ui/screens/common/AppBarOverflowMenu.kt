@@ -1,4 +1,4 @@
-package com.example.marvelcompose.ui.screens.characterdetail
+package com.example.marvelcompose.ui.screens.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert

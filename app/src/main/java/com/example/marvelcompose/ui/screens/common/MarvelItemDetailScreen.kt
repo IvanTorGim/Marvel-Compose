@@ -1,4 +1,4 @@
-package com.example.marvelcompose.ui.screens.characterdetail
+package com.example.marvelcompose.ui.screens.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -22,11 +22,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,24 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.marvelcompose.R
-import com.example.marvelcompose.data.entities.Character
 import com.example.marvelcompose.data.entities.MarvelItem
 import com.example.marvelcompose.data.entities.Reference
 import com.example.marvelcompose.data.entities.ReferenceList
-import com.example.marvelcompose.data.repositories.CharactersRepository
-
-@Composable
-fun MarvelItemDetailScreen(id: Int, onUpClick: () -> Unit) {
-    var characterState by remember { mutableStateOf<Character?>(null) }
-
-    LaunchedEffect(Unit) {
-        characterState = CharactersRepository.find(id)
-    }
-
-    characterState?.let { character ->
-        MarvelItemDetailScreen(character, onUpClick)
-    }
-}
 
 @Composable
 fun MarvelItemDetailScreen(marvelItem: MarvelItem, onUpClick: () -> Unit) {

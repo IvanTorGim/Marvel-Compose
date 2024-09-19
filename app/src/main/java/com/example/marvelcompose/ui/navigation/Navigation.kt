@@ -8,9 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.marvelcompose.ui.navigation.Feature.CHARACTER
-import com.example.marvelcompose.ui.screens.characterdetail.MarvelItemDetailScreen
-import com.example.marvelcompose.ui.screens.characters.CharacterScreen
+import com.example.marvelcompose.ui.screens.CharacterDetailScreen
+import com.example.marvelcompose.ui.screens.CharacterScreen
+import com.example.marvelcompose.ui.screens.ComicDetailScreen
+import com.example.marvelcompose.ui.screens.ComicsScreen
+import com.example.marvelcompose.ui.screens.EventDetailScreen
+import com.example.marvelcompose.ui.screens.EventsScreen
 
 @Composable
 fun Navigation() {
@@ -18,29 +21,71 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = CHARACTER.route
+        startDestination = Feature.CHARACTER.route
     ) {
         charactersNav(navController)
+        comicsNav(navController)
+        eventsNav(navController)
     }
 }
 
 private fun NavGraphBuilder.charactersNav(navController: NavController) {
     navigation(
-        startDestination = NavItem.ContentType(CHARACTER).route,
-        route = CHARACTER.route
+        startDestination = NavItem.ContentType(Feature.CHARACTER).route,
+        route = Feature.CHARACTER.route
     ) {
-        composable(NavItem.ContentType(CHARACTER)) {
-            CharacterScreen(
-                onClick = { character ->
-                    navController.navigate(
-                        NavItem.ContentDetail(CHARACTER).createRoute(character.id)
-                    )
-                }
+        composable(NavItem.ContentType(Feature.CHARACTER)) {
+            CharacterScreen { character ->
+                navController.navigate(
+                    NavItem.ContentDetail(Feature.CHARACTER).createRoute(character.id)
+                )
+            }
+        }
+        composable(NavItem.ContentDetail(Feature.CHARACTER)) { navBackStackEntry ->
+            CharacterDetailScreen(
+                id = navBackStackEntry.findArg<Int>(NavArg.ItemId),
+                onUpClick = { navController.popBackStack() }
             )
         }
-        composable(NavItem.ContentDetail(CHARACTER)) {
-            MarvelItemDetailScreen(
-                id = it.findArg<Int>(NavArg.ItemId),
+    }
+}
+
+private fun NavGraphBuilder.comicsNav(navController: NavController) {
+    navigation(
+        startDestination = NavItem.ContentType(Feature.COMICS).route,
+        route = Feature.COMICS.route
+    ) {
+        composable(NavItem.ContentType(Feature.COMICS)) {
+            ComicsScreen { comic ->
+                navController.navigate(
+                    NavItem.ContentDetail(Feature.COMICS).createRoute(comic.id)
+                )
+            }
+        }
+        composable(NavItem.ContentDetail(Feature.COMICS)) { navBackStackEntry ->
+            ComicDetailScreen(
+                comicId = navBackStackEntry.findArg<Int>(NavArg.ItemId),
+                onUpClick = { navController.popBackStack() }
+            )
+        }
+    }
+}
+
+private fun NavGraphBuilder.eventsNav(navController: NavController) {
+    navigation(
+        startDestination = NavItem.ContentType(Feature.EVENTS).route,
+        route = Feature.EVENTS.route
+    ) {
+        composable(NavItem.ContentType(Feature.EVENTS)) {
+            EventsScreen { event ->
+                navController.navigate(
+                    NavItem.ContentDetail(Feature.EVENTS).createRoute(event.id)
+                )
+            }
+        }
+        composable(NavItem.ContentDetail(Feature.EVENTS)) { navBackStackEntry ->
+            EventDetailScreen(
+                eventId = navBackStackEntry.findArg<Int>(NavArg.ItemId),
                 onUpClick = { navController.popBackStack() }
             )
         }

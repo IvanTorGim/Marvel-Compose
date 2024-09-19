@@ -1,4 +1,4 @@
-package com.example.marvelcompose.ui.screens.characterdetail
+package com.example.marvelcompose.ui.screens.common
 
 import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.app.ShareCompat
 import com.example.marvelcompose.R
-import com.example.marvelcompose.data.entities.Character
 import com.example.marvelcompose.data.entities.MarvelItem
 import com.example.marvelcompose.data.entities.Url
 import com.example.marvelcompose.ui.navigation.AppBarIcon
@@ -48,7 +47,13 @@ fun MarvelItemDetailScaffold(
                 },
                 floatingActionButton = {
                     if (marvelItem.urls.isNotEmpty()) {
-                        FloatingActionButton(onClick = { shareCharacter(context, marvelItem.title, marvelItem.urls.first()) }) {
+                        FloatingActionButton(onClick = {
+                            shareCharacter(
+                                context,
+                                marvelItem.title,
+                                marvelItem.urls.first()
+                            )
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(id = R.string.share_character)
@@ -62,7 +67,7 @@ fun MarvelItemDetailScaffold(
     )
 }
 
-private fun shareCharacter(context: Context, name: String, url:Url) {
+private fun shareCharacter(context: Context, name: String, url: Url) {
     ShareCompat
         .IntentBuilder(context)
         .setType("text/plain")

@@ -8,7 +8,6 @@ data class Comic(
     override val reference: List<ReferenceList>,
     override val urls: List<Url>,
     val format: Format
-
 ) : MarvelItem {
     enum class Format {
         COMIC,
