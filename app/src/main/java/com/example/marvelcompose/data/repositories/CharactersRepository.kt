@@ -5,7 +5,7 @@ import com.example.marvelcompose.data.model.Reference
 import com.example.marvelcompose.data.model.Url
 import com.example.marvelcompose.data.network.ApiClient
 import com.example.marvelcompose.data.network.entities.asString
-import com.example.marvelcompose.data.network.entities.Character as NetworkCharacter
+import com.example.marvelcompose.data.network.entities.ApiCharacter
 
 object CharactersRepository {
 
@@ -28,7 +28,7 @@ object CharactersRepository {
     }
 }
 
-fun NetworkCharacter.asCharacter(): Character {
+fun ApiCharacter.asCharacter(): Character {
     val comics = comics.items.map { Reference(it.name) }
     val series = series.items.map { Reference(it.name) }
     val events = events.items.map { Reference(it.name) }

@@ -12,12 +12,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import com.example.marvelcompose.data.model.Url
 
 @Composable
 fun AppBarOverflowMenu(urls: List<Url>) {
+    if (urls.isEmpty()) return
+
     var showMenu by remember { mutableStateOf(false) }
     val uriHandler = LocalUriHandler.current
 
@@ -31,8 +32,9 @@ fun AppBarOverflowMenu(urls: List<Url>) {
                 DropdownMenuItem(
                     text = { Text(text = it.type) },
                     onClick = {
+                        val url = it.url
                         showMenu = false
-                        uriHandler.openUri(it.url)
+                        uriHandler.openUri(url)
                     })
             }
         }

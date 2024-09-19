@@ -1,7 +1,7 @@
 package com.example.marvelcompose.data.network
 
 import com.example.marvelcompose.data.network.entities.ApiResponse
-import com.example.marvelcompose.data.network.entities.Character
+import com.example.marvelcompose.data.network.entities.ApiCharacter
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,10 +12,10 @@ interface CharactersService {
     suspend fun getCharacters(
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
-    ): ApiResponse<Character>
+    ): ApiResponse<ApiCharacter>
 
     @GET("/v1/public/characters/{characterId}")
     suspend fun findCharacter(
         @Path("characterId") characterId: Int
-    ): ApiResponse<Character>
+    ): ApiResponse<ApiCharacter>
 }

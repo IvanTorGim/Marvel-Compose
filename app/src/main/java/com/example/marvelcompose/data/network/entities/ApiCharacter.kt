@@ -1,6 +1,6 @@
 package com.example.marvelcompose.data.network.entities
 
-data class Character(
+data class ApiCharacter(
     val comics: Comics,
     val description: String,
     val events: Events,
