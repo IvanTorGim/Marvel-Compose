@@ -1,7 +1,7 @@
 package com.example.marvelcompose.ui.navigation
 
 enum class Feature(val route: String) {
-    CHARACTER("character"),
+    CHARACTERS("character"),
     SERIES("series"),
     EVENTS("events"),
     COMICS("comics"),
