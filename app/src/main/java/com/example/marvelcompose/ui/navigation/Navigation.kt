@@ -14,12 +14,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.marvelcompose.ui.screens.CharacterDetailScreen
-import com.example.marvelcompose.ui.screens.CharacterScreen
-import com.example.marvelcompose.ui.screens.ComicDetailScreen
-import com.example.marvelcompose.ui.screens.ComicsScreen
-import com.example.marvelcompose.ui.screens.EventDetailScreen
-import com.example.marvelcompose.ui.screens.EventsScreen
+import com.example.marvelcompose.ui.screens.characters.CharacterDetailScreen
+import com.example.marvelcompose.ui.screens.characters.CharacterScreen
+import com.example.marvelcompose.ui.screens.comics.ComicDetailScreen
+import com.example.marvelcompose.ui.screens.comics.ComicsScreen
+import com.example.marvelcompose.ui.screens.events.EventDetailScreen
+import com.example.marvelcompose.ui.screens.events.EventsScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
@@ -50,10 +50,7 @@ private fun NavGraphBuilder.charactersNav(navController: NavController) {
                 )
             }
         }
-        composable(NavCommand.ContentDetail(Feature.CHARACTERS)) { navBackStackEntry ->
-            val id = navBackStackEntry.findArg<Int>(NavArg.ItemId)
-            CharacterDetailScreen(characterId = id)
-        }
+        composable(NavCommand.ContentDetail(Feature.CHARACTERS)) { CharacterDetailScreen() }
     }
 }
 
@@ -69,10 +66,7 @@ private fun NavGraphBuilder.comicsNav(navController: NavController) {
                 )
             }
         }
-        composable(NavCommand.ContentDetail(Feature.COMICS)) { navBackStackEntry ->
-            val id = navBackStackEntry.findArg<Int>(NavArg.ItemId)
-            ComicDetailScreen(comicId = id)
-        }
+        composable(NavCommand.ContentDetail(Feature.COMICS)) { ComicDetailScreen() }
     }
 }
 
@@ -88,10 +82,7 @@ private fun NavGraphBuilder.eventsNav(navController: NavController) {
                 )
             }
         }
-        composable(NavCommand.ContentDetail(Feature.EVENTS)) { navBackStackEntry ->
-            val id = navBackStackEntry.findArg<Int>(NavArg.ItemId)
-            EventDetailScreen(eventId = id)
-        }
+        composable(NavCommand.ContentDetail(Feature.EVENTS)) { EventDetailScreen() }
     }
 }
 

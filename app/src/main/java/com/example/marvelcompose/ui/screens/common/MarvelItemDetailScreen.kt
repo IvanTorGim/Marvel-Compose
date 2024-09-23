@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Collections
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -36,19 +37,24 @@ import com.example.marvelcompose.data.entities.Reference
 import com.example.marvelcompose.data.entities.ReferenceList
 
 @Composable
-fun MarvelItemDetailScreen(marvelItem: MarvelItem) {
-    MarvelItemDetailScaffold(
-        marvelItem = marvelItem
-    ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(padding)
-        ) {
-            item { Header(marvelItem) }
-            marvelItem.reference.forEach {
-                val (icon, @StringRes stringRes) = it.type.createUiData()
-                section(icon, stringRes, it.reference)
+fun MarvelItemDetailScreen(loading: Boolean, marvelItem: MarvelItem?) {
+    if(loading){
+        CircularProgressIndicator()
+    }
+    if(marvelItem != null){
+        MarvelItemDetailScaffold(
+            marvelItem = marvelItem
+        ) { padding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(padding)
+            ) {
+                item { Header(marvelItem) }
+                marvelItem.reference.forEach {
+                    val (icon, @StringRes stringRes) = it.type.createUiData()
+                    section(icon, stringRes, it.reference)
+                }
             }
         }
     }

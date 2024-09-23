@@ -1,6 +1,5 @@
-package com.example.marvelcompose.ui.screens
+package com.example.marvelcompose.ui.screens.comics
 
-import android.app.ActionBar.Tab
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
@@ -8,34 +7,25 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.marvelcompose.R
 import com.example.marvelcompose.data.entities.Comic
-import com.example.marvelcompose.data.repositories.ComicsRepository
-import com.example.marvelcompose.data.repositories.toStringFormat
 import com.example.marvelcompose.ui.screens.common.MarvelItemDetailScreen
 import com.example.marvelcompose.ui.screens.common.MarvelItemsList
 import kotlinx.coroutines.launch
-import kotlin.math.max
 
 @Composable
-fun ComicsScreen(onClick: (Comic) -> Unit) {
-    var comicsState by remember { mutableStateOf(emptyList<Comic>()) }
-    LaunchedEffect(Unit) { comicsState = ComicsRepository.get() }
+fun ComicsScreen(
+    viewModel: ComicsViewModel = viewModel(),
+    onClick: (Comic) -> Unit
+) {
     val formats = Comic.Format.entries
     val pagerState = rememberPagerState { formats.size }
 
@@ -46,10 +36,14 @@ fun ComicsScreen(onClick: (Comic) -> Unit) {
         )
         HorizontalPager(
             state = pagerState
-        ) {
+        ) { page ->
+            val format = formats[page]
+            viewModel.formatRequested(format)
+            val pageState by viewModel.state.getValue(format).collectAsState()
             MarvelItemsList(
-                items = comicsState,
-                onClick = onClick
+                items = pageState.items,
+                onClick = onClick,
+                loading = pageState.loading
             )
         }
     }
@@ -73,14 +67,12 @@ fun ComicFormatsTabRow(pagerState: PagerState, formats: List<Comic.Format>) {
 }
 
 @Composable
-fun ComicDetailScreen(comicId: Int) {
-    var comicState by remember { mutableStateOf<Comic?>(null) }
-    LaunchedEffect(Unit) { comicState = ComicsRepository.find(comicId) }
-    comicState?.let {
-        MarvelItemDetailScreen(
-            marvelItem = it
-        )
-    }
+fun ComicDetailScreen(viewModel: ComicDetailViewModel = viewModel()) {
+    val state by viewModel.state.collectAsState()
+    MarvelItemDetailScreen(
+        marvelItem = state.comic,
+        loading = state.loading
+    )
 }
 
 @StringRes
