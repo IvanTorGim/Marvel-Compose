@@ -25,14 +25,14 @@ fun CharacterScreen(onClick: (Character) -> Unit) {
 }
 
 @Composable
-fun CharacterDetailScreen(id: Int, onUpClick: () -> Unit) {
+fun CharacterDetailScreen(characterId: Int) {
     var characterState by remember { mutableStateOf<Character?>(null) }
 
     LaunchedEffect(Unit) {
-        characterState = CharactersRepository.find(id)
+        characterState = CharactersRepository.find(characterId)
     }
 
     characterState?.let { character ->
-        MarvelItemDetailScreen(character, onUpClick)
+        MarvelItemDetailScreen(character)
     }
 }

@@ -36,10 +36,9 @@ import com.example.marvelcompose.data.entities.Reference
 import com.example.marvelcompose.data.entities.ReferenceList
 
 @Composable
-fun MarvelItemDetailScreen(marvelItem: MarvelItem, onUpClick: () -> Unit) {
+fun MarvelItemDetailScreen(marvelItem: MarvelItem) {
     MarvelItemDetailScaffold(
-        marvelItem = marvelItem,
-        onUpClick = onUpClick
+        marvelItem = marvelItem
     ) { padding ->
         LazyColumn(
             modifier = Modifier

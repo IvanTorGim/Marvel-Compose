@@ -1,6 +1,12 @@
 package com.example.marvelcompose.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -24,6 +30,11 @@ fun Navigation(navController: NavHostController) {
         charactersNav(navController)
         comicsNav(navController)
         eventsNav(navController)
+        composable(NavCommand.ContentType(Feature.SETTINGS)) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "Settings", style = MaterialTheme.typography.titleLarge)
+            }
+        }
     }
 }
 
@@ -40,10 +51,8 @@ private fun NavGraphBuilder.charactersNav(navController: NavController) {
             }
         }
         composable(NavCommand.ContentDetail(Feature.CHARACTERS)) { navBackStackEntry ->
-            CharacterDetailScreen(
-                id = navBackStackEntry.findArg<Int>(NavArg.ItemId),
-                onUpClick = { navController.popBackStack() }
-            )
+            val id = navBackStackEntry.findArg<Int>(NavArg.ItemId)
+            CharacterDetailScreen(characterId = id)
         }
     }
 }
@@ -61,10 +70,8 @@ private fun NavGraphBuilder.comicsNav(navController: NavController) {
             }
         }
         composable(NavCommand.ContentDetail(Feature.COMICS)) { navBackStackEntry ->
-            ComicDetailScreen(
-                comicId = navBackStackEntry.findArg<Int>(NavArg.ItemId),
-                onUpClick = { navController.popBackStack() }
-            )
+            val id = navBackStackEntry.findArg<Int>(NavArg.ItemId)
+            ComicDetailScreen(comicId = id)
         }
     }
 }
@@ -82,10 +89,8 @@ private fun NavGraphBuilder.eventsNav(navController: NavController) {
             }
         }
         composable(NavCommand.ContentDetail(Feature.EVENTS)) { navBackStackEntry ->
-            EventDetailScreen(
-                eventId = navBackStackEntry.findArg<Int>(NavArg.ItemId),
-                onUpClick = { navController.popBackStack() }
-            )
+            val id = navBackStackEntry.findArg<Int>(NavArg.ItemId)
+            EventDetailScreen(eventId = id)
         }
     }
 }

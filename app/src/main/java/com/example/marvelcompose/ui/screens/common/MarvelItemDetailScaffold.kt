@@ -11,8 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -21,24 +19,14 @@ import com.example.marvelcompose.R
 import com.example.marvelcompose.data.entities.MarvelItem
 import com.example.marvelcompose.data.entities.Url
 import com.example.marvelcompose.ui.navigation.AppBarIcon
-import com.example.marvelcompose.ui.navigation.ArrowBackIcon
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarvelItemDetailScaffold(
     marvelItem: MarvelItem,
-    onUpClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val context = LocalContext.current
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = marvelItem.title) },
-                navigationIcon = { ArrowBackIcon(onUpClick) },
-                actions = { AppBarOverflowMenu(marvelItem.urls) }
-            )
-        },
         bottomBar = {
             BottomAppBar(
                 actions = {
