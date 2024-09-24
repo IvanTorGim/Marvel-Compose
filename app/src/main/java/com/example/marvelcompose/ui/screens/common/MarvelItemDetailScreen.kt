@@ -35,25 +35,29 @@ import com.example.marvelcompose.R
 import com.example.marvelcompose.data.entities.MarvelItem
 import com.example.marvelcompose.data.entities.Reference
 import com.example.marvelcompose.data.entities.ReferenceList
+import com.example.marvelcompose.data.entities.Result
 
 @Composable
-fun MarvelItemDetailScreen(loading: Boolean, marvelItem: MarvelItem?) {
+fun MarvelItemDetailScreen(loading: Boolean, marvelItem: Result<MarvelItem?>) {
     if(loading){
         CircularProgressIndicator()
     }
-    if(marvelItem != null){
-        MarvelItemDetailScaffold(
-            marvelItem = marvelItem
-        ) { padding ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding)
-            ) {
-                item { Header(marvelItem) }
-                marvelItem.reference.forEach {
-                    val (icon, @StringRes stringRes) = it.type.createUiData()
-                    section(icon, stringRes, it.reference)
+
+    marvelItem.fold({ ErrorMessage(it)}){ item ->
+        if(item != null){
+            MarvelItemDetailScaffold(
+                marvelItem = item
+            ) { padding ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(padding)
+                ) {
+                    item { Header(item) }
+                    item.reference.forEach {
+                        val (icon, @StringRes stringRes) = it.type.createUiData()
+                        section(icon, stringRes, it.reference)
+                    }
                 }
             }
         }

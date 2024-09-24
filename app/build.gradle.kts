@@ -87,4 +87,6 @@ dependencies {
     implementation(libs.squareup.retrofit)
     implementation(libs.squareup.converter.gson)
     implementation(libs.squareup.logging.interceptor)
+
+    implementation(libs.io.arrow.core)
 }

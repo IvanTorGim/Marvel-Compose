@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.marvelcompose.R
 import com.example.marvelcompose.data.entities.Comic
+import com.example.marvelcompose.ui.screens.common.ErrorMessage
 import com.example.marvelcompose.ui.screens.common.MarvelItemDetailScreen
 import com.example.marvelcompose.ui.screens.common.MarvelItemsList
 import kotlinx.coroutines.launch
@@ -40,11 +41,15 @@ fun ComicsScreen(
             val format = formats[page]
             viewModel.formatRequested(format)
             val pageState by viewModel.state.getValue(format).collectAsState()
-            MarvelItemsList(
-                items = pageState.items,
-                onClick = onClick,
-                loading = pageState.loading
-            )
+
+            pageState.items.fold({ ErrorMessage(it) }) {
+                MarvelItemsList(
+                    items = it,
+                    onClick = onClick,
+                    loading = pageState.loading,
+                    onItemMore = {}
+                )
+            }
         }
     }
 }

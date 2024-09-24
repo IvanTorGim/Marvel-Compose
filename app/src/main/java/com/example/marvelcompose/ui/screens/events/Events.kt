@@ -15,7 +15,7 @@ fun EventsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     MarvelItemListScreen(
-        items = state.items,
+        marvelItems = state.items,
         loading = state.loading,
         onClick = onClick
     )
