@@ -11,8 +11,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import com.example.marvelcompose.R
 import com.example.marvelcompose.ui.navigation.AppBarIcon
@@ -25,6 +28,8 @@ import com.example.marvelcompose.ui.theme.MarvelComposeTheme
 @Composable
 fun MarvelApp() {
     val appState = rememberMarvelAppState()
+    val scrollState = rememberTopAppBarState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(scrollState)
 
     MarvelScreen {
         ModalNavigationDrawer(
@@ -39,6 +44,7 @@ fun MarvelApp() {
             }
         ) {
             Scaffold(
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     TopAppBar(
                         title = { Text(stringResource(id = R.string.app_name)) },
@@ -50,7 +56,8 @@ fun MarvelApp() {
                                 imageVector = Icons.Default.Menu,
                                 onClick = { appState.onMenuClick() }
                             )
-                        }
+                        },
+                        scrollBehavior = scrollBehavior
                     )
                 },
                 bottomBar = {

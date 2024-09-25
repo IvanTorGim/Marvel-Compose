@@ -2,9 +2,11 @@ package com.example.marvelcompose.ui.screens.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,12 +42,18 @@ import com.example.marvelcompose.data.entities.Result
 
 @Composable
 fun MarvelItemDetailScreen(loading: Boolean, marvelItem: Result<MarvelItem?>) {
-    if(loading){
-        CircularProgressIndicator()
+    if (loading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 
-    marvelItem.fold({ ErrorMessage(it)}){ item ->
-        if(item != null){
+    marvelItem.fold({ ErrorMessage(it) }) { item ->
+        if (item != null) {
             MarvelItemDetailScaffold(
                 marvelItem = item
             ) { padding ->
