@@ -14,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.marvelcompose.R
 import com.example.marvelcompose.data.entities.Comic
 import com.example.marvelcompose.ui.screens.common.ErrorMessage
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ComicsScreen(
-    viewModel: ComicsViewModel = viewModel(),
+    viewModel: ComicsViewModel = hiltViewModel(),
     onClick: (Comic) -> Unit
 ) {
     val formats = Comic.Format.entries
@@ -72,7 +72,7 @@ fun ComicFormatsTabRow(pagerState: PagerState, formats: List<Comic.Format>) {
 }
 
 @Composable
-fun ComicDetailScreen(viewModel: ComicDetailViewModel = viewModel()) {
+fun ComicDetailScreen(viewModel: ComicDetailViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     MarvelItemDetailScreen(
         marvelItem = state.comic,

@@ -3,14 +3,14 @@ package com.example.marvelcompose.ui.screens.events
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.marvelcompose.data.entities.Event
 import com.example.marvelcompose.ui.screens.common.MarvelItemDetailScreen
 import com.example.marvelcompose.ui.screens.common.MarvelItemListScreen
 
 @Composable
 fun EventsScreen(
-    viewModel: EventsViewModel = viewModel(),
+    viewModel: EventsViewModel = hiltViewModel(),
     onClick: (Event) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -22,7 +22,7 @@ fun EventsScreen(
 }
 
 @Composable
-fun EventDetailScreen(viewModel: EventDetailViewModel = viewModel()) {
+fun EventDetailScreen(viewModel: EventDetailViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     MarvelItemDetailScreen(
         loading = state.loading,

@@ -1,6 +1,5 @@
-package com.example.marvelcompose.data.network
+package com.example.marvelcompose.data.network.remote
 
-import com.example.marvelcompose.data.entities.Event
 import com.example.marvelcompose.data.network.entities.ApiEvent
 import com.example.marvelcompose.data.network.entities.ApiResponse
 import retrofit2.http.GET

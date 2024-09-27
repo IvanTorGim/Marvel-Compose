@@ -1,18 +1,20 @@
 [versions]
-agp = "8.5.0"
+agp = "8.5.2"
 coilCompose = "2.7.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.5"
+lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
-composeBom = "2024.04.01"
+composeBom = "2024.09.02"
 retrofit = "2.11.0"
 okhttpInterceptor = "4.12.0"
-navigationCompose = "2.8.0"
+navigationCompose = "2.8.1"
 arrowCore = "1.2.4"
+daggerHilt = "2.49"
+hilt = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,7 +42,12 @@ squareup-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging
 
 io-arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrowCore" }
 
+dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
+dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "daggerHilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = 'daggerHilt' }
+kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }

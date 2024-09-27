@@ -2,13 +2,15 @@ package com.example.marvelcompose.data.repositories
 
 import com.example.marvelcompose.data.entities.Event
 import com.example.marvelcompose.data.entities.Result
-import com.example.marvelcompose.data.network.ApiClient
+import com.example.marvelcompose.data.network.remote.EventsService
+import javax.inject.Inject
 
-object EventRepository : Repository<Event>() {
+class EventRepository @Inject constructor(
+    private val service: EventsService
+) : Repository<Event>() {
 
     suspend fun get(): Result<List<Event>> = super.get {
-        ApiClient
-            .eventsService
+        service
             .getEvents(0, 100)
             .data
             .results
@@ -18,8 +20,7 @@ object EventRepository : Repository<Event>() {
     suspend fun find(id: Int): Result<Event> = super.find(
         id = id,
         findActionRemote = {
-            ApiClient
-                .eventsService
+            service
                 .findEvent(id)
                 .data
                 .results

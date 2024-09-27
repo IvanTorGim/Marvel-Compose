@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun <T : MarvelItem> MarvelItemListScreen(
     marvelItems: Result<List<T>>,
-    loading: Boolean,
+    loading: Boolean = false,
     onClick: (T) -> Unit
 ) {
 

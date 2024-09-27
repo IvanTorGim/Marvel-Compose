@@ -1,7 +1,7 @@
-package com.example.marvelcompose.data.network
+package com.example.marvelcompose.data.network.remote
 
-import com.example.marvelcompose.data.network.entities.ApiResponse
 import com.example.marvelcompose.data.network.entities.ApiCharacter
+import com.example.marvelcompose.data.network.entities.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

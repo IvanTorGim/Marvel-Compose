@@ -1,4 +1,4 @@
-package com.example.marvelcompose.data.network
+package com.example.marvelcompose.data.network.remote
 
 import com.example.marvelcompose.data.network.entities.ApiComic
 import com.example.marvelcompose.data.network.entities.ApiResponse
@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ComicsSevice {
+interface ComicsService {
 
     @GET("/v1/public/comics")
     suspend fun getComics(

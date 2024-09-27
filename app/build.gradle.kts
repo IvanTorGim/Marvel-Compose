@@ -3,6 +3,8 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kotlinKapt)
 }
 
 val localProperties = Properties().apply {
@@ -89,4 +91,8 @@ dependencies {
     implementation(libs.squareup.logging.interceptor)
 
     implementation(libs.io.arrow.core)
+
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 }
